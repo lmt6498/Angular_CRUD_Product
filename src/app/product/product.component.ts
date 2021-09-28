@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Product} from "../models/product";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ProductService} from "../services/product.service";
 
 @Component({
   selector: 'app-product',
@@ -10,16 +11,11 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 export class ProductComponent implements OnInit {
   productFormGroup!: FormGroup
 
-  @Input()
   products: Product[] = [];
 
-  @Output() deleteProductEmit = new EventEmitter<string>();
-  @Output() createProductEmit = new EventEmitter<Product>();
-  @Output() editProductEmit = new EventEmitter<Product>();
 
-
-  constructor() {
-
+  constructor(private productService: ProductService) {
+    this.products = productService.products;
   }
 
   ngOnInit(){
@@ -33,8 +29,15 @@ export class ProductComponent implements OnInit {
     console.log(this.products)
   }
 
-  create() {
-    this.createProductEmit.emit(this.productFormGroup.value);
+  create(){
+    this.productService.create(this.productFormGroup.value);
+    this.productFormGroup.reset();
+  }
+
+  edit(){
+    this.productService.edit(this.productFormGroup.value);
+    this.productFormGroup.reset();
+    this.productFormGroup.get('status')?.setValue(true);
   }
 
   showEdit(name: string){
@@ -48,14 +51,7 @@ export class ProductComponent implements OnInit {
       }
     }
   }
-
-  edit (){
-    this.editProductEmit.emit(this.productFormGroup.value);
-    this.productFormGroup.reset();
+  delete(name: any){
+    this.productService.delete(name);
   }
-
-  delete(name:any) {
-    this.deleteProductEmit.emit(name);
-  }
-
 }
