@@ -1,0 +1,145 @@
+<div class="container">
+  <h2>CRUD Product</h2>
+  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalCreate">
+    Create
+  </button>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Image</th>
+      <th>Price</th>
+      <th>Qty</th>
+      <th>Status</th>
+      <th colspan="2" style="text-align: center">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of products">
+      <td>{{item.name}}</td>
+      <td><img src="{{item.img}}" width="200" height="200" alt="anh1"></td>
+      <td>{{item.price}}</td>
+      <td>{{item.stock}}</td>
+      <td *ngIf="item.status === true" style="color: blue">Còn hàng</td>
+      <td *ngIf="item.status === false" style="color: red">hết hàng</td>
+      <td>
+        <button type="button" (click)="showEdit(item.name)" class="btn btn-success" data-toggle="modal"
+                data-target="#myModalEdit">
+          Edit
+        </button>
+      </td>
+      <td>
+        <button (click)="delete(item.name)" type="button" class="btn btn-danger">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<!-- The Modal Create -->
+<div class="modal" id="myModalCreate">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Create Product</h4>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form [formGroup]="productFormGroup">
+          <table>
+            <tr>
+              <td>Name:</td>
+              <td><input placeholder="name" formControlName="name">
+                <span *ngIf="!productFormGroup.get('name')?.valid && productFormGroup.get('name')?.touched"
+                      style="color: red">Tên ít nhất 6 ký tự</span></td>
+            </tr>
+            <tr>
+              <td>Image:</td>
+              <td><input placeholder="img" formControlName="img">
+                <span *ngIf="!productFormGroup.get('img')?.valid && productFormGroup.get('img')?.touched"
+                      style="color: red">Ảnh không được để trống</span></td>
+            </tr>
+            <tr>
+              <td>Price:</td>
+              <td><input placeholder="price" formControlName="price">
+                <span *ngIf="!productFormGroup.get('price')?.valid && productFormGroup.get('price')?.touched"
+                      style="color: red">Name min 6</span></td>
+            </tr>
+            <tr>
+              <td>Quantity:</td>
+              <td><input placeholder="stock" formControlName="stock">
+                <span *ngIf="!productFormGroup.get('stock')?.valid && productFormGroup.get('stock')?.touched"
+                      style="color: red">Name min 6</span>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" (click)="create()"
+                [disabled]="productFormGroup.invalid" class="btn btn-success" data-dismiss="modal">Create
+        </button>
+        <button type="button" (click)="productFormGroup.reset()" class="btn btn-danger" data-dismiss="modal">Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- The Modal edit -->
+<div class="modal" id="myModalEdit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Product</h4>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form [formGroup]="productFormGroup">
+          <table>
+            <tr>
+              <td>Name:</td>
+              <td><input placeholder="name" readonly formControlName="name">
+                <span *ngIf="!productFormGroup.get('name')?.valid && productFormGroup.get('name')?.touched"
+                      style="color: red">Tên ít nhất 6 ký tự</span></td>
+            </tr>
+            <tr>
+              <td>Image:</td>
+              <td><input placeholder="img" formControlName="img">
+                <p *ngIf="!productFormGroup.get('img')?.valid && productFormGroup.get('img')?.touched"
+                   style="color: red">Ảnh không được bỏ trống!</p></td>
+            </tr>
+            <tr>
+              <td>Price:</td>
+              <td><input placeholder="price" formControlName="price">
+                <span *ngIf="!productFormGroup.get('price')?.valid && productFormGroup.get('price')?.touched"
+                      style="color: red">Name min 6</span></td>
+            </tr>
+            <tr>
+              <td>Quantity:</td>
+              <td><input placeholder="stock" formControlName="stock">
+                <span *ngIf="!productFormGroup.get('stock')?.valid && productFormGroup.get('stock')?.touched"
+                      style="color: red">Name min 6</span></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" (click)="edit()" class="btn btn-success" data-dismiss="modal">Edit</button>
+        <button type="button" (click)="productFormGroup.reset()" class="btn btn-danger" data-dismiss="modal">Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
