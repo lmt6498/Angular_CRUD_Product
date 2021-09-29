@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Product} from "../models/product";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+// import {ProductService} from "../services/product.service";
+import {HttpClient} from "@angular/common/http";
 import {ProductService} from "../services/product.service";
 
 @Component({
@@ -18,7 +20,7 @@ export class ProductComponent implements OnInit {
     this.products = productService.products;
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.productFormGroup = new FormGroup({
       name: new FormControl('', Validators.minLength(6)),
       img: new FormControl('', Validators.required),
@@ -29,29 +31,25 @@ export class ProductComponent implements OnInit {
     console.log(this.products)
   }
 
-  create(){
-    this.productService.create(this.productFormGroup.value);
-    this.productFormGroup.reset();
-  }
+  // getProduct() {
+  //   return this.http.get<Product[]>('http://localhost:8080/api/products').subscribe((data) => {
+  //     this.products = data;
+  //   })
+  //
+  // }
 
-  edit(){
-    this.productService.edit(this.productFormGroup.value);
-    this.productFormGroup.reset();
-    this.productFormGroup.get('status')?.setValue(true);
-  }
+  // create(){
+  //   this.productService.create(this.productFormGroup.value);
+  //   this.productFormGroup.reset();
+  // }
+  //
+  // edit(){
+  //   this.productService.edit(this.productFormGroup.value);
+  //   this.productFormGroup.reset();
+  //   this.productFormGroup.get('status')?.setValue(true);
+  // }
 
-  showEdit(name: string){
-    for (let i = 0; i < this.products.length; i++) {
-      if(this.products[i].name === name){
-        this.productFormGroup.get('name')?.setValue(this.products[i].name);
-        this.productFormGroup.get('img')?.setValue(this.products[i].img);
-        this.productFormGroup.get('price')?.setValue(this.products[i].price);
-        this.productFormGroup.get('stock')?.setValue(this.products[i].stock);
-        return;
-      }
-    }
-  }
-  delete(name: any){
-    this.productService.delete(name);
+  delete(id: any){
+    this.productService.delete(id);
   }
 }

@@ -1,4 +1,5 @@
 export class Product {
+  id: number;
   name: string;
   img: string;
   price: number;
@@ -6,7 +7,8 @@ export class Product {
   status: boolean;
 
 
-  constructor(name: string, img: string, price: number, stock: number, status: boolean) {
+  constructor(id: number, name: string, img: string, price: number, stock: number, status: boolean) {
+    this.id = id;
     this.name = name;
     this.img = img;
     this.price = price;
